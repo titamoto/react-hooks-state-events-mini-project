@@ -1,27 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Task from "./Task.js";
 
 function TaskList({ tasks }) {
-  const [isDeleted, setIsDeleted] = useState(false);
   const [newTasks, setNewTasks] = useState(tasks);
 
   function handleClick(index) {
-    setIsDeleted(isDeleted === true);
-    setNewTasks(newTasks.filter((_, i) => i !== index));
+    setNewTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
   }
+
+  useEffect(() => {
+    setNewTasks(tasks);
+  }, [tasks]);
 
   return (
     <div className="tasks">
-      {newTasks.map((task, index) => {
-        return (
-          <Task
-            key={index}
-            text={task.text}
-            category={task.category}
-            handleClick={() => handleClick(index)}
-          />
-        );
-      })}
+      {newTasks.map((task, index) => (
+        <Task
+          key={index}
+          text={task.text}
+          category={task.category}
+          handleClick={() => handleClick(index)}
+        />
+      ))}
     </div>
   );
 }
